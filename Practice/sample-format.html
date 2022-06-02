@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<script
+			src="https://code.jquery.com/jquery-3.6.0.min.js"
+			integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+			crossorigin="anonymous"
+		></script>
+	</head>
+	<body>
+		<div class="schedule-change-module-content">
+			<div>
+				<input
+					class="cstbox firstChild empty"
+					type="checkbox"
+					name="checkday"
+					id="checkday"
+				/><label for="checkday" class="lastChild">日付未定</label>
+				<input
+					type="date"
+					class="form-field firstChild input-choice-day2"
+					style="margin-left: 50px"
+				/>
+			</div>
+		</div>
+
+		<style>
+			.schedule-change-module-content > div {
+				display: flex;
+				align-items: center;
+				font-size: 16px;
+			}
+			.schedule-change-module-content > div > .input-choice-day2 {
+				margin-left: 50px;
+			}
+			input.cstbox[type="radio"],
+			input.cstbox[type="checkbox"] {
+				display: none;
+				margin: 0;
+			}
+			input.cstbox[type="radio"] + label,
+			input.cstbox[type="checkbox"] + label {
+				padding: 0 0 0 26px;
+			}
+			label {
+				user-select: none;
+			}
+			input.cstbox[type="radio"] + label,
+			input.cstbox[type="checkbox"] + label {
+				position: relative;
+				display: inline-block;
+				margin-right: 10px;
+			}
+			input.cstbox[type="checkbox"] + label::before {
+				border: 1px solid #999999;
+				border-radius: 6px;
+			}
+			input.cstbox[type="checkbox"] + label::before {
+				content: "";
+				position: absolute;
+				top: 50%;
+				left: 0;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+				display: block;
+				width: 20px;
+				height: 20px;
+				margin-top: -10px;
+				background: #ffffff;
+			}
+			input.cstbox[type="checkbox"]:checked + label::after {
+				left: 3px;
+				width: 12px;
+				height: 8px;
+				margin-top: -6px;
+				margin-left: 1px;
+				border-left: 3px solid #ff6600;
+				border-bottom: 3px solid #ff6600;
+				-webkit-transform: rotate(-45deg);
+				-ms-transform: rotate(-45deg);
+				transform: rotate(-45deg);
+			}
+			input.cstbox[type="radio"]:checked + label::after,
+			input.cstbox[type="checkbox"]:checked + label::after {
+				content: "";
+				position: absolute;
+				top: 50%;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+				display: block;
+			}
+			input.cstbox[type="checkbox"]:checked + label::after {
+				left: 3px;
+				width: 12px;
+				height: 8px;
+				margin-top: -6px;
+				margin-left: 1px;
+				border-left: 3px solid #ff6600;
+				border-bottom: 3px solid #ff6600;
+				-webkit-transform: rotate(-45deg);
+				-ms-transform: rotate(-45deg);
+				transform: rotate(-45deg);
+			}
+			.form-field {
+				margin: 2px 0;
+				padding: 5px;
+				color: #333333;
+				font-size: 16px;
+				border: 1px solid #999999;
+				border-radius: 6px;
+				background: #ffffff;
+			}
+		</style>
+		<script>
+			$(function () {
+				$('[name="checkday"]').change(function () {
+					if ($('[name="checkday"]').prop("checked")) {
+						var date = $(".input-choice-day2").val();
+						$(".input-choice-day2").get(0).type = "month";
+						if (date) {
+							let dateMonth = date.slice(0, -3);
+							$(".input-choice-day2").val(dateMonth);
+						}
+					} else {
+						var date = $(".input-choice-day2").val();
+						$(".input-choice-day2").get(0).type = "date";
+						if (date) {
+							$(".input-choice-day2").val(date + "-01");
+						}
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

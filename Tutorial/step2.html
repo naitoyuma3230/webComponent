@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<!-- ShadowDOMとの比較として素の<p>タグにグローバルにスタイルを当てる -->
+		<p>外側</p>
+		<style>
+			p {
+				color: blue;
+			}
+		</style>
+
+		<!-- ここの配下を Shadow DOMにする-->
+		<div id="shadowHost"></div>
+		<!-- <style> p {color: blue;} </style>をshadowDOM内に設置したが、外部の<P>に影響を及ぼしていない -->
+
+		<script>
+			const shadowHost = document.getElementById("shadowHost");
+			// attachShadow() ShadowDomを生成する
+			// ShadowDomは外部のjs、cssから隔離される
+			const shadow = shadowHost.attachShadow({ mode: "open" });
+
+			// Shadow DOMの中身を生成する
+			const title = document.createElement("p");
+			title.textContent = "Shadow Dom 内";
+			const style = document.createElement("style");
+			style.textContent = "p {color: red;}";
+			const container = document.createElement("div");
+			container.appendChild(title);
+			container.appendChild(style);
+
+			// Shadow DOMに中身を追加する
+			shadow.appendChild(container);
+		</script>
+	</body>
+</html>

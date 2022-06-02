@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<!-- HTML Template の定義 -->
+		<template id="title-template">
+			<h1>
+				<slot name="slot-text">デフォルトのテキスト</slot>
+			</h1>
+		</template>
+
+		<!-- HTML Template をここに埋め込む -->
+		<div id="container">
+			<!-- 埋め込む際に利用されるslot要素 -->
+			<!-- このHTML要素はDOM構造上はShadowroot外に設置されているが、Templateのslot部分に描画される-->
+			<!-- また<slot>内のデフォルトの文章は描画されないが、↓の<p>要素を消すとデフォルトの文章が描画される -->
+			<p slot="slot-text">スロットに代入するテキスト</p>
+		</div>
+
+		<script>
+			// <template>タグはHTMLの読み込み時に描画されず、jsによって後から描画されるために使う
+			const titleTemplate = document.getElementById("title-template");
+
+			// 上記テンプレートを複製
+			const title = titleTemplate.content.cloneNode(true);
+
+			// shadowDOMをcontainer内に作成
+			// mode:closedでは作成されたDOMインスタンスを直接指定しないとjsによるアクセスができない。
+			// shadowRoot.appendChild()はできるが、.find()などで親からのアクセスなどはできない
+			const shadowRoot = document
+				.getElementById("container")
+				.attachShadow({ mode: "closed" });
+			shadowRoot.appendChild(title);
+		</script>
+	</body>
+</html>

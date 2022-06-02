@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<my-title></my-title>
+		<script>
+			// HTMLElementを継承しコンストラクター内でsuper(親クラスのコンストラクターを呼び出す)
+			// たいていのHTML要素はHTMLElementを継承している。ここで独自のHTML要素を作成する。
+			class MyTitle extends HTMLElement {
+				constructor() {
+					super();
+				}
+
+				// connectedCallback：コンポーネントがdocumentに初めて追加される時に呼び出される
+				connectedCallback() {
+					const title = document.createElement("h1");
+					title.textContent = "タイトル";
+					this.appendChild(title);
+					// 作成したHTML要素MyTitleに対しDOM操作により<h1>タイトル</h1>が追加された
+				}
+			}
+			// CustomElementRegistryに登録し使用可能となる
+			customElements.define("my-title", MyTitle);
+		</script>
+	</body>
+</html>

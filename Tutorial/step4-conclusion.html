@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<style>
+			p {
+				color: green;
+				font-weight: bold;
+			}
+			h5 {
+				color: red;
+			}
+			my-title p {
+				text-decoration: underline;
+			}
+		</style>
+		<!-- 
+        WebComponentを構成する基本的な技術
+      1. <template>: 描画されず、jsで使用されインスタンス化される事を前提としたHTML要素（HTML要素の基本構造を定義）
+      2. HTMLElement :独自のタグを作成、登録する(templateを独自タグとして使用する準備と実行) 
+      3．ShadowDOM： js、css影響範囲をShadowRoot内に制限する（HTMLElementに対するDOM操作、CSS付加（scoped））
+      4. slot : 外部のHTML要素を特定のDOMに描画する(ShadowDOMとの組み合わせ)
+    -->
+
+		<p>テンプレート外のPタグ</p>
+		<hr style="border: none; border-bottom: 2px dotted #333" />
+
+		<!-- WebComponents用のHTMLテンプレート(描画されない) -->
+		<template id="title-template">
+			<ul>
+				<li><slot name="title">デフォルト</slot></li>
+				<li><slot name="subtitle">デフォルト</slot></li>
+				<li>
+					<p>独自コンポーネントの描画(ShadowDOM内のjs、CSSが適応される)</p>
+				</li>
+			</ul>
+			<style>
+				p {
+					color: blue;
+					font-size: 20px;
+				}
+			</style>
+		</template>
+
+		<script>
+			// カスタム要素用のクラスを作成する
+			class MyTitle extends HTMLElement {
+				constructor() {
+					super();
+					const template = document.getElementById("title-template");
+					const title = template.content.cloneNode(true);
+					// HTMLテンプレートを複製した
+
+					const shadowRoot = this.attachShadow({ mode: "closed" });
+					// 複製した要素をShadowRootに追加
+					shadowRoot.appendChild(title);
+				}
+			}
+			// カスタム要素をHTMLに登録する
+			customElements.define("my-title", MyTitle);
+		</script>
+
+		<!-- 実際に利用する際に、title, subtitleにslotに代入する値をセットする -->
+		<my-title>
+			<p slot="title">
+				pタグ-Slot-Title<br />(独自タグ内に描画されているが、ShadowDOMによりjs、CSSの影響外)
+			</p>
+			<p slot="subtitle">
+				pタグ-Slot-Subtitle<br />(Slotは独自タグ内に外部のjs、CSSを適用した要素を使いたい時に有効)
+			</p>
+		</my-title>
+
+		<hr style="border: none; border-bottom: 2px dotted #333" />
+
+		<my-title>
+			<h5 slot="title">h5-title</h5>
+			<h5 slot="subtitle">h5-subtitle</h5>
+		</my-title>
+	</body>
+</html>
